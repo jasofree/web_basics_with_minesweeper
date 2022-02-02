@@ -23,4 +23,14 @@ document.addEventListener('DOMContentLoaded', () => {
             gameCellsContainerNode.appendChild(cellNode);
         }
     }
+    for (let row = 0; row < cellRows; row++) {
+        for (let column = 0; column < cellColumns; column++) {
+            let cellNode = document.querySelector(`.game_cell[data-row='${row}'][data-column='${column}']`);
+            if (cellNode.getAttribute('data-is-bomb') !== 'true') {
+                let numberNeighborBombs = Math.round(Math.random() * (7 + 1 - 1) + 1);
+                cellNode.setAttribute('data-number-neighbor-bombs', numberNeighborBombs);
+                cellNode.textContent = numberNeighborBombs;
+            }
+        }
+    }
 }, false);
