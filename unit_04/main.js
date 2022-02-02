@@ -10,7 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
             let cellNode = document.createElement("div");
             let randomBomb = Math.random() * (ratioMinesCells + 1 - 1) + 1;
             let areThereMinesLeft = numberMinesRendered < numberMinesToDiscover;
-            let isBomb = areThereMinesLeft && randomBomb <= 2;
+            let areThereSameOrMoreMinesLeftThanCellsLeft = areThereMinesLeft && ( numberMinesToDiscover - numberMinesRendered ) >= cellRows * cellColumns - ( cellColumns * row + column );
+            let isBomb = areThereMinesLeft && (randomBomb <= 2 || areThereSameOrMoreMinesLeftThanCellsLeft);
             cellNode.classList.add('game_cell');
             cellNode.setAttribute('data-row', row);
             cellNode.setAttribute('data-column', column);
