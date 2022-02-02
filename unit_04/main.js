@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cellNode.setAttribute('data-column', column);
             cellNode.setAttribute('data-is-bomb', isBomb);
             if (isBomb) {
-                cellNode.textContent = 'B';
+                // cellNode.textContent = 'B';
                 numberMinesRendered++;
             }
             gameCellsContainerNode.appendChild(cellNode);
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (cellNode.getAttribute('data-is-bomb') !== 'true') {
                 let numberNeighborBombs = countNeighborBombs(row, column);
                 cellNode.setAttribute('data-number-neighbor-bombs', numberNeighborBombs);
-                cellNode.textContent = numberNeighborBombs;
+                // cellNode.textContent = numberNeighborBombs;
             }
         }
     }
