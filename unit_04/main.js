@@ -27,10 +27,31 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let column = 0; column < cellColumns; column++) {
             let cellNode = document.querySelector(`.game_cell[data-row='${row}'][data-column='${column}']`);
             if (cellNode.getAttribute('data-is-bomb') !== 'true') {
-                let numberNeighborBombs = Math.round(Math.random() * (7 + 1 - 1) + 1);
+                let numberNeighborBombs = countNeighborBombs(row, column);
                 cellNode.setAttribute('data-number-neighbor-bombs', numberNeighborBombs);
                 cellNode.textContent = numberNeighborBombs;
             }
         }
     }
+
+    function countNeighborBombs(row, column) {
+        let numberNeighborBombs = 0;
+        for (let index_row = -1; index_row < 2; index_row++) {
+            let neighbor_row = row + index_row;
+            for (let index_column = -1; index_column < 2; index_column++) {
+                if (index_row === 0 && index_column === 0) {
+                    continue;
+                }
+                let neighbor_column = column + index_column;
+                if (neighbor_row > -1 && neighbor_row < cellRows && neighbor_column > -1 && neighbor_column < cellColumns) {
+                    let neighborNode = document.querySelector(`.game_cell[data-row='${neighbor_row}'][data-column='${neighbor_column}']`);
+                    let isBomb = neighborNode.getAttribute('data-is-bomb') === 'true';
+                    if (isBomb) {
+                        numberNeighborBombs++;
+                    }
+                }
+            }
+        }
+        return numberNeighborBombs;
+    };
 }, false);
