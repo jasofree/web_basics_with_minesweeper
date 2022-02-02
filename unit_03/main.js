@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
     let cellRows = 8;
     let cellColumns = 8;
     let gameCellsContainerNode = document.querySelector('#game_cells_container');
