@@ -17,8 +17,11 @@ body {
 }
 
 #game_cells_container .game_cell {
+    align-items: center;
     background-color: #bbb;
     border: 2px ridge #bbb;
+    display: flex;
     height: 30px;
+    justify-content: center;
     width: 30px;
 }
