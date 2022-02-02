@@ -1,8 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
+    let cellRows = 8;
+    let cellColumns = 8;
     let gameCellsContainerNode = document.querySelector('#game_cells_container');
-    for (let index = 0; index < 64; index++) {
-        let cellNode = document.createElement("div");
-        cellNode.classList.add('game_cell');
-        gameCellsContainerNode.appendChild(cellNode);
+    for (let row = 0; row < cellRows; row++) {
+        for (let column = 0; column < cellColumns; column++) {
+            let cellNode = document.createElement("div");
+            cellNode.classList.add('game_cell');
+            gameCellsContainerNode.appendChild(cellNode);
+        }
     }
 }, false);
