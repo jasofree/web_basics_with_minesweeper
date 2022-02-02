@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', function () {
         for (let column = 0; column < cellColumns; column++) {
             let cellNode = document.createElement("div");
             cellNode.classList.add('game_cell');
+            cellNode.setAttribute('data-row', row);
+            cellNode.setAttribute('data-column', column);
             gameCellsContainerNode.appendChild(cellNode);
         }
     }
