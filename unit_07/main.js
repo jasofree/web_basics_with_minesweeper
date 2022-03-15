@@ -29,6 +29,11 @@ for (let row = 0; row < cellRows; row++) {
     }
 }
 
+function checkGameShouldBeFinished() {
+    let numberCellsCleared = gameCellsContainerNode.querySelectorAll('.game_cell.cleared').length;
+    return (numberMinesToDiscover === numberMinesDiscovered && numberCellsCleared + numberMinesToDiscover === cellRows * cellColumns);
+};
+
 function endGame() {
     gameCellsContainerNode.classList.add('game_over');
     gameProgressNode.querySelector('.state').classList.add('game_over');
@@ -47,7 +52,7 @@ updateMinesToDiscover();
 
 for (let row = 0; row < cellRows; row++) {
     for (let column = 0; column < cellColumns; column++) {
-        let cellNode = document.querySelector(`.game_cell[data-row='${row}'][data-column='${column}']`);
+        let cellNode = gameCellsContainerNode.querySelector(`.game_cell[data-row='${row}'][data-column='${column}']`);
         if (cellNode.getAttribute('data-is-bomb') !== 'true') {
             let numberNeighborBombs = countNeighborBombs(row, column);
             cellNode.setAttribute('data-number-neighbor-bombs', numberNeighborBombs);
@@ -66,7 +71,7 @@ function countNeighborBombs(row, column) {
             }
             let neighbor_column = column + index_column;
             if (neighbor_row > -1 && neighbor_row < cellRows && neighbor_column > -1 && neighbor_column < cellColumns) {
-                let neighborNode = document.querySelector(`.game_cell[data-row='${neighbor_row}'][data-column='${neighbor_column}']`);
+                let neighborNode = gameCellsContainerNode.querySelector(`.game_cell[data-row='${neighbor_row}'][data-column='${neighbor_column}']`);
                 let isBomb = neighborNode.getAttribute('data-is-bomb') === 'true';
                 if (isBomb) {
                     numberNeighborBombs++;
@@ -75,6 +80,33 @@ function countNeighborBombs(row, column) {
         }
     }
     return numberNeighborBombs;
+};
+
+function clickNeighborsNoBombs(row, column) {
+    row = parseInt(row);
+    column = parseInt(column);
+    for (let index_row = -1; index_row < 2; index_row++) {
+        let neighbor_row = row + index_row;
+        for (let index_column = -1; index_column < 2; index_column++) {
+            if (index_row === 0 && index_column === 0) {
+                continue;
+            }
+            let neighbor_column = column + index_column;
+            if (neighbor_row > -1 && neighbor_row < cellRows && neighbor_column > -1 && neighbor_column < cellColumns) {
+                let neighborNode = gameCellsContainerNode.querySelector(`.game_cell[data-row='${neighbor_row}'][data-column='${neighbor_column}']`);
+                let isBomb = neighborNode.getAttribute('data-is-bomb') === 'true';
+                let isCleared = neighborNode.classList.contains('cleared');
+                let numberNeighborBombs = parseInt(neighborNode.getAttribute('data-number-neighbor-bombs'));
+                let withoutNeighborBombs = numberNeighborBombs === 0;
+                if (!isBomb && !isCleared) {
+                    neighborNode.click();
+                    if (withoutNeighborBombs) {
+                        clickNeighborsNoBombs(neighbor_row, neighbor_column);
+                    }
+                }
+            }
+        }
+    }
 };
 
 document.addEventListener('click', (event) => {
@@ -93,6 +125,14 @@ document.addEventListener('click', (event) => {
             const iHaveNeighborBombs = numberNeighborBombs > 0;
             if (iHaveNeighborBombs) {
                 cellNode.textContent = numberNeighborBombs;
+            }
+            if (checkGameShouldBeFinished()) {
+                endGame();
+            }
+            else if (!iHaveNeighborBombs) {
+                let row = cellNode.getAttribute('data-row');
+                let column = cellNode.getAttribute('data-column');
+                clickNeighborsNoBombs(row, column);
             }
         }
     }
