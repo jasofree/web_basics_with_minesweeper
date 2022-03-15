@@ -29,6 +29,11 @@ for (let row = 0; row < cellRows; row++) {
     }
 }
 
+function endGame() {
+    gameCellsContainerNode.classList.add('game_over');
+    gameProgressNode.querySelector('.state').classList.add('game_over');
+};
+
 function updateMinesDiscovered() {
     gameProgressNode.querySelector('.number_mines_discovered').textContent = new String(numberMinesDiscovered).padStart(3, "0");
 };
@@ -79,8 +84,7 @@ document.addEventListener('click', (event) => {
         const isBomb = cellNode.getAttribute('data-is-bomb') === 'true';
         if (isBomb) {
             cellNode.innerHTML = bombCharacter;
-            gameCellsContainerNode.classList.add('game_over');
-            gameProgressNode.querySelector('.state').classList.add('game_over');
+            endGame();
             gameProgressNode.querySelector('.state').innerHTML = pensiveCharacter;
         }
         else {
@@ -107,8 +111,7 @@ document.addEventListener("contextmenu", (event) => {
             updateMinesDiscovered();
         }
         else {
-            gameCellsContainerNode.classList.add('game_over');
-            gameProgressNode.querySelector('.state').classList.add('game_over');
+            endGame();
             gameProgressNode.querySelector('.state').innerHTML = pensiveCharacter;
         }
 	}
