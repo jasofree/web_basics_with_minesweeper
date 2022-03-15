@@ -43,6 +43,10 @@ body {
     min-width: 40px;
     width: 40px;
 }
+
+#game_progress .state.game_over {
+    cursor: pointer;
+}
    
 #game_progress .number_mines_discovered {
     align-items: center;
@@ -57,6 +61,10 @@ body {
     display: flex;
     flex-wrap: wrap;
 }
+
+#game_cells_container.game_over {
+    pointer-events: none;
+  }
 
 #game_cells_container .game_cell {
     align-items: center;
