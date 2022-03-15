@@ -4,6 +4,7 @@ let numberMinesRendered = 0;
 let numberMinesDiscovered = 0;
 let numberMinesToDiscover = 10;
 let ratioMinesCells = Math.round(cellRows * cellColumns / numberMinesToDiscover);
+const bombCharacter = '&#x1F4A3;';
 const smilingCharacter = '&#x1F642;';
 const pensiveCharacter = '&#x1F614;';
 const gameCellsContainerNode = document.querySelector('#game_cells_container');
@@ -69,3 +70,21 @@ function countNeighborBombs(row, column) {
     }
     return numberNeighborBombs;
 };
+
+document.querySelectorAll('#game_cells_container .game_cell').forEach((cellNode) => {
+    cellNode.addEventListener('click', (event) => {
+        const cellNode = event.target;
+        const isBomb = cellNode.getAttribute('data-is-bomb') === 'true';
+        if (isBomb) {
+            cellNode.innerHTML = bombCharacter;
+        }
+        else {
+            cellNode.classList.add('cleared');
+            const numberNeighborBombs = parseInt(cellNode.getAttribute('data-number-neighbor-bombs'));
+            const iHaveNeighborBombs = numberNeighborBombs > 0;
+            if (iHaveNeighborBombs) {
+                cellNode.textContent = numberNeighborBombs;
+            }
+        }
+    });
+});

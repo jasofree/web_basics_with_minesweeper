@@ -3,6 +3,7 @@
 body {
     align-items: center;
     display: flex;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
     justify-content: center;
     margin: 0;
     min-height: 100vh;
@@ -61,8 +62,14 @@ body {
     align-items: center;
     background-color: #bbb;
     border: 2px ridge #bbb;
+    cursor: pointer;
     display: flex;
     height: 30px;
     justify-content: center;
     width: 30px;
 }
+
+#game_cells_container .game_cell.cleared {
+    border: 2px ridge #fff;
+    background-color: #eee;
+  }
