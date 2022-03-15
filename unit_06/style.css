@@ -80,4 +80,9 @@ body {
 #game_cells_container .game_cell.cleared {
     border: 2px ridge #fff;
     background-color: #eee;
-  }
+}
+
+#game_cells_container .game_cell.flagged {
+    border: 2px ridge #fff;
+    background-color: #eee;
+}

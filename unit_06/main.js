@@ -5,6 +5,7 @@ let numberMinesDiscovered = 0;
 let numberMinesToDiscover = 10;
 let ratioMinesCells = Math.round(cellRows * cellColumns / numberMinesToDiscover);
 const bombCharacter = '&#x1F4A3;';
+const flagCharacter = '&#x1F6A9;';
 const smilingCharacter = '&#x1F642;';
 const pensiveCharacter = '&#x1F614;';
 const gameCellsContainerNode = document.querySelector('#game_cells_container');
@@ -91,4 +92,24 @@ document.addEventListener('click', (event) => {
             }
         }
     }
+});
+
+document.addEventListener("contextmenu", (event) => {
+	const eventTarget = event.target;
+    if (eventTarget && eventTarget.classList.contains("game_cell")) {
+		event.preventDefault();
+        let cellNode = eventTarget;
+        cellNode.classList.add('flagged');
+        cellNode.innerHTML = flagCharacter;
+        let isBomb = cellNode.getAttribute('data-is-bomb') === 'true';
+        if (isBomb) {
+            numberMinesDiscovered++;
+            updateMinesDiscovered();
+        }
+        else {
+            gameCellsContainerNode.classList.add('game_over');
+            gameProgressNode.querySelector('.state').classList.add('game_over');
+            gameProgressNode.querySelector('.state').innerHTML = pensiveCharacter;
+        }
+	}
 });
