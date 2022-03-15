@@ -78,6 +78,9 @@ document.addEventListener('click', (event) => {
         const isBomb = cellNode.getAttribute('data-is-bomb') === 'true';
         if (isBomb) {
             cellNode.innerHTML = bombCharacter;
+            gameCellsContainerNode.classList.add('game_over');
+            gameProgressNode.querySelector('.state').classList.add('game_over');
+            gameProgressNode.querySelector('.state').innerHTML = pensiveCharacter;
         }
         else {
             cellNode.classList.add('cleared');
