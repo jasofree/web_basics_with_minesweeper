@@ -10,6 +10,7 @@ const smilingCharacter = '&#x1F642;';
 const pensiveCharacter = '&#x1F614;';
 const gameCellsContainerNode = document.querySelector('#game_cells_container');
 const gameProgressNode = document.querySelector('#game_progress');
+const gameProgressStateNode = gameProgressNode.querySelector('.state');
 
 function startGame() {
     for (let row = 0; row < cellRows; row++) {
@@ -29,6 +30,17 @@ function startGame() {
             gameCellsContainerNode.appendChild(cellNode);
         }
     }
+    for (let row = 0; row < cellRows; row++) {
+        for (let column = 0; column < cellColumns; column++) {
+            let cellNode = gameCellsContainerNode.querySelector(`.game_cell[data-row='${row}'][data-column='${column}']`);
+            if (cellNode.getAttribute('data-is-bomb') !== 'true') {
+                let numberNeighborBombs = countNeighborBombs(row, column);
+                cellNode.setAttribute('data-number-neighbor-bombs', numberNeighborBombs);
+            }
+        }
+    }
+    updateMinesDiscovered();
+    updateMinesToDiscover();
 };
 
 function checkGameShouldBeFinished() {
@@ -36,9 +48,18 @@ function checkGameShouldBeFinished() {
     return (numberMinesToDiscover === numberMinesDiscovered && numberCellsCleared + numberMinesToDiscover === cellRows * cellColumns);
 };
 
+function resetGame() {
+    numberMinesRendered = 0;
+    numberMinesDiscovered = 0;
+    gameCellsContainerNode.querySelectorAll('.game_cell').forEach(cellNode => cellNode.remove());
+    gameCellsContainerNode.classList.remove('game_over');
+    gameProgressStateNode.classList.remove('game_over');
+    gameProgressStateNode.innerHTML = smilingCharacter;
+};
+
 function endGame() {
     gameCellsContainerNode.classList.add('game_over');
-    gameProgressNode.querySelector('.state').classList.add('game_over');
+    gameProgressStateNode.classList.add('game_over');
 };
 
 function updateMinesDiscovered() {
@@ -52,19 +73,11 @@ function updateMinesToDiscover() {
     gameProgressNode.querySelector('.number_mines_to_discover').textContent = new String(numberMinesToDiscover).padStart(3, "0");
 };
 
-startGame();
-updateMinesDiscovered();
-updateMinesToDiscover();
+function elementContainsEveryClass(element, arrayClasses) {
+    return arrayClasses.every(className => element.classList.contains(className));
+};
 
-for (let row = 0; row < cellRows; row++) {
-    for (let column = 0; column < cellColumns; column++) {
-        let cellNode = gameCellsContainerNode.querySelector(`.game_cell[data-row='${row}'][data-column='${column}']`);
-        if (cellNode.getAttribute('data-is-bomb') !== 'true') {
-            let numberNeighborBombs = countNeighborBombs(row, column);
-            cellNode.setAttribute('data-number-neighbor-bombs', numberNeighborBombs);
-        }
-    }
-}
+startGame();
 
 function countNeighborBombs(row, column) {
     let numberNeighborBombs = 0;
@@ -122,7 +135,7 @@ document.addEventListener('click', (event) => {
         if (isBomb) {
             cellNode.innerHTML = bombCharacter;
             endGame();
-            gameProgressNode.querySelector('.state').innerHTML = pensiveCharacter;
+            gameProgressStateNode.innerHTML = pensiveCharacter;
         }
         else {
             cellNode.classList.add('cleared');
@@ -157,7 +170,15 @@ document.addEventListener("contextmenu", (event) => {
         }
         else {
             endGame();
-            gameProgressNode.querySelector('.state').innerHTML = pensiveCharacter;
+            gameProgressStateNode.innerHTML = pensiveCharacter;
         }
+	}
+});
+
+document.addEventListener("click", (event) => {  
+	const eventTarget = event.target;
+    if (eventTarget && elementContainsEveryClass(eventTarget, ['state', 'game_over'])) {
+		resetGame();
+        startGame();
 	}
 });
