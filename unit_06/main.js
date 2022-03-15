@@ -71,9 +71,10 @@ function countNeighborBombs(row, column) {
     return numberNeighborBombs;
 };
 
-document.querySelectorAll('#game_cells_container .game_cell').forEach((cellNode) => {
-    cellNode.addEventListener('click', (event) => {
-        const cellNode = event.target;
+document.addEventListener('click', (event) => {
+    const eventTarget = event.target;
+    if (eventTarget && eventTarget.classList.contains("game_cell")) {
+        const cellNode = eventTarget;
         const isBomb = cellNode.getAttribute('data-is-bomb') === 'true';
         if (isBomb) {
             cellNode.innerHTML = bombCharacter;
@@ -86,5 +87,5 @@ document.querySelectorAll('#game_cells_container .game_cell').forEach((cellNode)
                 cellNode.textContent = numberNeighborBombs;
             }
         }
-    });
+    }
 });
