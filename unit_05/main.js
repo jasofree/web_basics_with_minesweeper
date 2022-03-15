@@ -28,9 +28,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    gameProgressNode.querySelector('.number_mines_discovered').textContent = new String(numberMinesDiscovered).padStart(3, "0");
-    gameProgressNode.querySelector('.number_mines_to_discover').textContent = new String(numberMinesToDiscover).padStart(3, "0");
+    function updateMinesDiscovered() {
+        gameProgressNode.querySelector('.number_mines_discovered').textContent = new String(numberMinesDiscovered).padStart(3, "0");
+    };
 
+    function updateMinesToDiscover() {
+        gameProgressNode.querySelector('.number_mines_to_discover').textContent = new String(numberMinesToDiscover).padStart(3, "0");
+    };
+
+    updateMinesDiscovered();
+    updateMinesToDiscover();
+    
     for (let row = 0; row < cellRows; row++) {
         for (let column = 0; column < cellColumns; column++) {
             let cellNode = document.querySelector(`.game_cell[data-row='${row}'][data-column='${column}']`);
