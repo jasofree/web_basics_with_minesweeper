@@ -10,24 +10,26 @@ const smilingCharacter = '&#x1F642;';
 const pensiveCharacter = '&#x1F614;';
 const gameCellsContainerNode = document.querySelector('#game_cells_container');
 const gameProgressNode = document.querySelector('#game_progress');
-for (let row = 0; row < cellRows; row++) {
-    for (let column = 0; column < cellColumns; column++) {
-        let cellNode = document.createElement("div");
-        let randomBomb = Math.random() * (ratioMinesCells + 1 - 1) + 1;
-        let areThereMinesLeft = numberMinesRendered < numberMinesToDiscover;
-        let areThereSameOrMoreMinesLeftThanCellsLeft = areThereMinesLeft && ( numberMinesToDiscover - numberMinesRendered ) >= cellRows * cellColumns - ( cellColumns * row + column );
-        let isBomb = areThereMinesLeft && (randomBomb <= 2 || areThereSameOrMoreMinesLeftThanCellsLeft);
-        cellNode.classList.add('game_cell');
-        cellNode.setAttribute('data-row', row);
-        cellNode.setAttribute('data-column', column);
-        cellNode.setAttribute('data-is-bomb', isBomb);
-        if (isBomb) {
-            // cellNode.textContent = 'B';
-            numberMinesRendered++;
+
+function startGame() {
+    for (let row = 0; row < cellRows; row++) {
+        for (let column = 0; column < cellColumns; column++) {
+            let cellNode = document.createElement("div");
+            let randomBomb = Math.random() * (ratioMinesCells + 1 - 1) + 1;
+            let areThereMinesLeft = numberMinesRendered < numberMinesToDiscover;
+            let areThereSameOrMoreMinesLeftThanCellsLeft = areThereMinesLeft && ( numberMinesToDiscover - numberMinesRendered ) >= cellRows * cellColumns - ( cellColumns * row + column );
+            let isBomb = areThereMinesLeft && (randomBomb <= 2 || areThereSameOrMoreMinesLeftThanCellsLeft);
+            cellNode.classList.add('game_cell');
+            cellNode.setAttribute('data-row', row);
+            cellNode.setAttribute('data-column', column);
+            cellNode.setAttribute('data-is-bomb', isBomb);
+            if (isBomb) {
+                numberMinesRendered++;
+            }
+            gameCellsContainerNode.appendChild(cellNode);
         }
-        gameCellsContainerNode.appendChild(cellNode);
     }
-}
+};
 
 function checkGameShouldBeFinished() {
     let numberCellsCleared = gameCellsContainerNode.querySelectorAll('.game_cell.cleared').length;
@@ -41,12 +43,16 @@ function endGame() {
 
 function updateMinesDiscovered() {
     gameProgressNode.querySelector('.number_mines_discovered').textContent = new String(numberMinesDiscovered).padStart(3, "0");
+    if (checkGameShouldBeFinished()) {
+        endGame();
+    }
 };
 
 function updateMinesToDiscover() {
     gameProgressNode.querySelector('.number_mines_to_discover').textContent = new String(numberMinesToDiscover).padStart(3, "0");
 };
 
+startGame();
 updateMinesDiscovered();
 updateMinesToDiscover();
 
@@ -56,7 +62,6 @@ for (let row = 0; row < cellRows; row++) {
         if (cellNode.getAttribute('data-is-bomb') !== 'true') {
             let numberNeighborBombs = countNeighborBombs(row, column);
             cellNode.setAttribute('data-number-neighbor-bombs', numberNeighborBombs);
-            // cellNode.textContent = numberNeighborBombs;
         }
     }
 }
