@@ -2,9 +2,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let cellRows = 8;
     let cellColumns = 8;
     let numberMinesRendered = 0;
+    let numberMinesDiscovered = 0;
     let numberMinesToDiscover = 10;
     let ratioMinesCells = Math.round(cellRows * cellColumns / numberMinesToDiscover);
-    let gameCellsContainerNode = document.querySelector('#game_cells_container');
+    const smilingCharacter = '&#x1F642;';
+    const pensiveCharacter = '&#x1F614;';
+    const gameCellsContainerNode = document.querySelector('#game_cells_container');
+    const gameProgressNode = document.querySelector('#game_progress');
     for (let row = 0; row < cellRows; row++) {
         for (let column = 0; column < cellColumns; column++) {
             let cellNode = document.createElement("div");
@@ -23,6 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
             gameCellsContainerNode.appendChild(cellNode);
         }
     }
+
+    gameProgressNode.querySelector('.number_mines_discovered').textContent = new String(numberMinesDiscovered).padStart(3, "0");
+    gameProgressNode.querySelector('.number_mines_to_discover').textContent = new String(numberMinesToDiscover).padStart(3, "0");
+
     for (let row = 0; row < cellRows; row++) {
         for (let column = 0; column < cellColumns; column++) {
             let cellNode = document.querySelector(`.game_cell[data-row='${row}'][data-column='${column}']`);
