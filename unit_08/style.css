@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Roboto+Mono:wght@700&display=swap');
+
+body {
+    align-items: center;
+    display: flex;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    justify-content: center;
+    margin: 0;
+    min-height: 100vh;
+    min-width: 100vw;
+}
+
+#app {
+    width: 312px;
+}
+
+#game_progress {
+    background-color: #000;
+    border: 20px solid #bbb;
+    border-bottom-width: 0;
+    border-radius: 4px 4px 0 0;
+    color: limegreen;
+    display: flex;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 32px;
+    height: 40px;
+}
+  
+#game_progress .number_mines_to_discover {
+    align-items: center;
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+}
+  
+#game_progress .state {
+    align-items: center;
+    border: 20px solid #bbb;
+    border-bottom-width: 0;
+    border-top-width: 0;
+    display: flex;
+    justify-content: center;
+    min-width: 40px;
+    width: 40px;
+}
+
+#game_progress .state.game_over {
+    cursor: pointer;
+}
+   
+#game_progress .number_mines_discovered {
+    align-items: center;
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+#game_cells_container {
+    border: 20px solid #bbb;
+    border-radius: 0 0 4px 4px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#game_cells_container.game_over {
+    pointer-events: none;
+  }
+
+#game_cells_container .game_cell {
+    align-items: center;
+    background-color: #bbb;
+    border: 2px ridge #bbb;
+    cursor: pointer;
+    display: flex;
+    height: 30px;
+    justify-content: center;
+    width: 30px;
+}
+
+#game_cells_container .game_cell.cleared {
+    border: 2px ridge #fff;
+    background-color: #eee;
+}
+
+#game_cells_container .game_cell.flagged {
+    border: 2px ridge #fff;
+    background-color: #eee;
+}
