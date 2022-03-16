@@ -7,10 +7,12 @@ let ratioMinesCells = Math.round(cellRows * cellColumns / numberMinesToDiscover)
 const bombCharacter = '&#x1F4A3;';
 const flagCharacter = '&#x1F6A9;';
 const smilingCharacter = '&#x1F642;';
+const thinkingCharacter = '&#x1F914;';
 const pensiveCharacter = '&#x1F614;';
 const gameCellsContainerNode = document.querySelector('#game_cells_container');
 const gameProgressNode = document.querySelector('#game_progress');
 const gameProgressStateNode = gameProgressNode.querySelector('.state');
+gameProgressStateNode.innerHTML = thinkingCharacter;
 
 function startGame() {
     for (let row = 0; row < cellRows; row++) {
@@ -41,6 +43,7 @@ function startGame() {
     }
     updateMinesDiscovered();
     updateMinesToDiscover();
+    gameProgressStateNode.innerHTML = thinkingCharacter;
 };
 
 function checkGameShouldBeFinished() {
@@ -66,6 +69,7 @@ function updateMinesDiscovered() {
     gameProgressNode.querySelector('.number_mines_discovered').textContent = new String(numberMinesDiscovered).padStart(3, "0");
     if (checkGameShouldBeFinished()) {
         endGame();
+        gameProgressStateNode.innerHTML = smilingCharacter;
     }
 };
 
@@ -146,6 +150,7 @@ document.addEventListener('click', (event) => {
             }
             if (checkGameShouldBeFinished()) {
                 endGame();
+                gameProgressStateNode.innerHTML = smilingCharacter;
             }
             else if (!iHaveNeighborBombs) {
                 let row = cellNode.getAttribute('data-row');
