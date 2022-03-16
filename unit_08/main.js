@@ -18,6 +18,10 @@ function getCellNode(row, column) {
     return gameCellsContainerNode.querySelector(`.game_cell[data-row='${row}'][data-column='${column}']`);
 };
 
+function cellNodeIsBomb(cellNode) {
+    return cellNode.getAttribute('data-is-bomb') === 'true';
+};
+
 function startGame() {
     for (let row = 0; row < cellRows; row++) {
         for (let column = 0; column < cellColumns; column++) {
@@ -39,7 +43,7 @@ function startGame() {
     for (let row = 0; row < cellRows; row++) {
         for (let column = 0; column < cellColumns; column++) {
             let cellNode = getCellNode(row, column);
-            if (cellNode.getAttribute('data-is-bomb') !== 'true') {
+            if (!cellNodeIsBomb(cellNode)) {
                 let numberNeighborBombs = countNeighborBombs(row, column);
                 cellNode.setAttribute('data-number-neighbor-bombs', numberNeighborBombs);
             }
@@ -98,7 +102,7 @@ function countNeighborBombs(row, column) {
             let neighbor_column = column + index_column;
             if (neighbor_row > -1 && neighbor_row < cellRows && neighbor_column > -1 && neighbor_column < cellColumns) {
                 let neighborNode = getCellNode(neighbor_row, neighbor_column);
-                let isBomb = neighborNode.getAttribute('data-is-bomb') === 'true';
+                let isBomb = cellNodeIsBomb(neighborNode);
                 if (isBomb) {
                     numberNeighborBombs++;
                 }
@@ -120,7 +124,7 @@ function clickNeighborsNoBombs(row, column) {
             let neighbor_column = column + index_column;
             if (neighbor_row > -1 && neighbor_row < cellRows && neighbor_column > -1 && neighbor_column < cellColumns) {
                 let neighborNode = getCellNode(neighbor_row, neighbor_column);
-                let isBomb = neighborNode.getAttribute('data-is-bomb') === 'true';
+                let isBomb = cellNodeIsBomb(neighborNode);
                 let isCleared = neighborNode.classList.contains('cleared');
                 let numberNeighborBombs = parseInt(neighborNode.getAttribute('data-number-neighbor-bombs'));
                 let withoutNeighborBombs = numberNeighborBombs === 0;
@@ -139,7 +143,7 @@ document.addEventListener('click', (event) => {
     const eventTarget = event.target;
     if (eventTarget && eventTarget.classList.contains("game_cell")) {
         const cellNode = eventTarget;
-        const isBomb = cellNode.getAttribute('data-is-bomb') === 'true';
+        const isBomb = cellNodeIsBomb(cellNode);
         if (isBomb) {
             cellNode.innerHTML = bombCharacter;
             endGame();
@@ -172,7 +176,7 @@ document.addEventListener("contextmenu", (event) => {
         let cellNode = eventTarget;
         cellNode.classList.add('flagged');
         cellNode.innerHTML = flagCharacter;
-        let isBomb = cellNode.getAttribute('data-is-bomb') === 'true';
+        let isBomb = cellNodeIsBomb(cellNode);
         if (isBomb) {
             numberMinesDiscovered++;
             updateMinesDiscovered();
