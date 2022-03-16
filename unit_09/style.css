@@ -86,3 +86,39 @@ body {
     border: 2px ridge #fff;
     background-color: #eee;
 }
+
+#game_mode_switcher {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin-top: 4px;
+  }
+  
+  #game_mode_switcher .game_mode {
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 800;
+    margin: 4px 0;
+    opacity: 0.5;
+    padding: 4px;
+  }
+  
+  #game_mode_switcher .game_mode.active {
+    cursor: default;
+    opacity: 1;
+    text-shadow: 2px 2px #777;
+  }
+  
+  #game_mode_switcher .game_mode.basic {
+    background-color: rgb(62, 145, 62);
+  }
+  
+  #game_mode_switcher .game_mode.intermediate {
+    background-color: rgb(145, 62, 62);
+  }
+  
+  #game_mode_switcher .game_mode.expert {
+    background-color: rgb(0, 0, 0);
+  }

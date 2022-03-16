@@ -24,6 +24,7 @@ const flagCharacter = '&#x1F6A9;';
 const smilingCharacter = '&#x1F642;';
 const thinkingCharacter = '&#x1F914;';
 const pensiveCharacter = '&#x1F614;';
+const appNode = document.querySelector('#app');
 const gameCellsContainerNode = document.querySelector('#game_cells_container');
 const gameProgressNode = document.querySelector('#game_progress');
 const gameProgressStateNode = gameProgressNode.querySelector('.state');
@@ -49,6 +50,14 @@ function setGameMode(newGameModeSelected) {
 };
 
 function startGame() {
+    for (const key in gameModes) {
+        appNode.classList.remove(gameModes[key].className);
+    }
+    appNode.classList.add(gameMode.className);
+    document.querySelector(`#game_mode_switcher .game_mode.${gameModeSelected}`)?.classList.add('active');
+    document.querySelectorAll(`#game_mode_switcher .game_mode:not(.${gameModeSelected})`)?.forEach(element => {
+        element.classList.remove('active');
+    });
     for (let row = 0; row < cellRows; row++) {
         for (let column = 0; column < cellColumns; column++) {
             let cellNode = document.createElement("div");
