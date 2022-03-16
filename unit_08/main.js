@@ -91,8 +91,7 @@ function elementContainsEveryClass(element, arrayClasses) {
 
 startGame();
 
-function countNeighborBombs(row, column) {
-    let numberNeighborBombs = 0;
+function iterateNeighborCells(row, column, extra_params_array, iterationFunction) {
     for (let index_row = -1; index_row < 2; index_row++) {
         let neighbor_row = row + index_row;
         for (let index_column = -1; index_column < 2; index_column++) {
@@ -101,42 +100,40 @@ function countNeighborBombs(row, column) {
             }
             let neighbor_column = column + index_column;
             if (neighbor_row > -1 && neighbor_row < cellRows && neighbor_column > -1 && neighbor_column < cellColumns) {
-                let neighborNode = getCellNode(neighbor_row, neighbor_column);
-                let isBomb = cellNodeIsBomb(neighborNode);
-                if (isBomb) {
-                    numberNeighborBombs++;
-                }
+                iterationFunction.apply(this, [neighbor_row, neighbor_column].concat(extra_params_array));
             }
         }
     }
+}
+
+function countNeighborBombs(row, column) {
+    let numberNeighborBombs = 0;
+    iterateNeighborCells(row, column, [numberNeighborBombs], function(neighbor_row, neighbor_column) {
+        let neighborNode = getCellNode(neighbor_row, neighbor_column);
+        let isBomb = cellNodeIsBomb(neighborNode);
+        if (isBomb) {
+            numberNeighborBombs++;
+        }
+    });
     return numberNeighborBombs;
 };
 
 function clickNeighborsNoBombs(row, column) {
     row = parseInt(row);
     column = parseInt(column);
-    for (let index_row = -1; index_row < 2; index_row++) {
-        let neighbor_row = row + index_row;
-        for (let index_column = -1; index_column < 2; index_column++) {
-            if (index_row === 0 && index_column === 0) {
-                continue;
-            }
-            let neighbor_column = column + index_column;
-            if (neighbor_row > -1 && neighbor_row < cellRows && neighbor_column > -1 && neighbor_column < cellColumns) {
-                let neighborNode = getCellNode(neighbor_row, neighbor_column);
-                let isBomb = cellNodeIsBomb(neighborNode);
-                let isCleared = neighborNode.classList.contains('cleared');
-                let numberNeighborBombs = parseInt(neighborNode.getAttribute('data-number-neighbor-bombs'));
-                let withoutNeighborBombs = numberNeighborBombs === 0;
-                if (!isBomb && !isCleared) {
-                    neighborNode.click();
-                    if (withoutNeighborBombs) {
-                        clickNeighborsNoBombs(neighbor_row, neighbor_column);
-                    }
-                }
+    iterateNeighborCells(row, column, [], function(neighbor_row, neighbor_column) {
+        let neighborNode = getCellNode(neighbor_row, neighbor_column);
+        let isBomb = cellNodeIsBomb(neighborNode);
+        let isCleared = neighborNode.classList.contains('cleared');
+        let numberNeighborBombs = parseInt(neighborNode.getAttribute('data-number-neighbor-bombs'));
+        let withoutNeighborBombs = numberNeighborBombs === 0;
+        if (!isBomb && !isCleared) {
+            neighborNode.click();
+            if (withoutNeighborBombs) {
+                clickNeighborsNoBombs(neighbor_row, neighbor_column);
             }
         }
-    }
+    });
 };
 
 document.addEventListener('click', (event) => {
