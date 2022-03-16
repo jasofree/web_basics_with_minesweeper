@@ -10,8 +10,16 @@ body {
     min-width: 100vw;
 }
 
-#app {
-    width: 312px;
+#app.game_mode_basic {
+    width: 280px;
+}
+  
+#app.game_mode_intermediate {
+    width: 520px;
+}
+  
+#app.game_mode_expert {
+    width: 940px;
 }
 
 #game_progress {
@@ -70,6 +78,7 @@ body {
     align-items: center;
     background-color: #bbb;
     border: 2px ridge #bbb;
+    box-sizing: border-box;
     cursor: pointer;
     display: flex;
     height: 30px;

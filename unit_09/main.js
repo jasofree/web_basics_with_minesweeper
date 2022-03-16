@@ -225,4 +225,10 @@ document.addEventListener("click", (event) => {
 		resetGame();
         startGame();
 	}
+    else if (eventTarget && eventTarget.closest('.game_mode:not(.active)') instanceof HTMLElement) {
+		gameModeSelected = eventTarget.closest('.game_mode:not(.active)').getAttribute('data-mode');
+        resetGame();
+        setGameMode(gameModeSelected);
+        startGame();
+	}
 });
