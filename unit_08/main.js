@@ -68,16 +68,16 @@ function resetGame() {
     gameProgressStateNode.innerHTML = smilingCharacter;
 };
 
-function endGame() {
+function endGame(progressStateCharacter) {
     gameCellsContainerNode.classList.add('game_over');
     gameProgressStateNode.classList.add('game_over');
+    gameProgressStateNode.innerHTML = progressStateCharacter;
 };
 
 function updateMinesDiscovered() {
     gameProgressNode.querySelector('.number_mines_discovered').textContent = new String(numberMinesDiscovered).padStart(3, "0");
     if (checkGameShouldBeFinished()) {
-        endGame();
-        gameProgressStateNode.innerHTML = smilingCharacter;
+        endGame(smilingCharacter);
     }
 };
 
@@ -146,8 +146,7 @@ document.addEventListener('click', (event) => {
         const isBomb = cellNodeIsBomb(cellNode);
         if (isBomb) {
             cellNode.innerHTML = bombCharacter;
-            endGame();
-            gameProgressStateNode.innerHTML = pensiveCharacter;
+            endGame(pensiveCharacter);
         }
         else {
             cellNode.classList.add('cleared');
@@ -157,8 +156,7 @@ document.addEventListener('click', (event) => {
                 cellNode.textContent = numberNeighborBombs;
             }
             if (checkGameShouldBeFinished()) {
-                endGame();
-                gameProgressStateNode.innerHTML = smilingCharacter;
+                endGame(smilingCharacter);
             }
             else if (!iHaveNeighborBombs) {
                 let row = cellNode.getAttribute('data-row');
@@ -182,8 +180,7 @@ document.addEventListener("contextmenu", (event) => {
             updateMinesDiscovered();
         }
         else {
-            endGame();
-            gameProgressStateNode.innerHTML = pensiveCharacter;
+            endGame(pensiveCharacter);
         }
 	}
 });
