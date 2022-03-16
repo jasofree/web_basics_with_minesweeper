@@ -1,9 +1,24 @@
-let cellRows = 8;
-let cellColumns = 8;
-let numberMinesRendered = 0;
-let numberMinesDiscovered = 0;
-let numberMinesToDiscover = 10;
-let ratioMinesCells = Math.round(cellRows * cellColumns / numberMinesToDiscover);
+const gameModes = {
+    basic: {
+        cellRows: 8,
+        cellColumns: 8,
+        numberMinesToDiscover: 10,
+        className: 'game_mode_basic'
+    },
+    intermediate: {
+        cellRows: 16,
+        cellColumns: 16,
+        numberMinesToDiscover: 40,
+        className: 'game_mode_intermediate'
+    },
+    expert: {
+        cellRows: 16,
+        cellColumns: 30,
+        numberMinesToDiscover: 99,
+        className: 'game_mode_expert'
+    }
+}
+
 const bombCharacter = '&#x1F4A3;';
 const flagCharacter = '&#x1F6A9;';
 const smilingCharacter = '&#x1F642;';
@@ -12,6 +27,8 @@ const pensiveCharacter = '&#x1F614;';
 const gameCellsContainerNode = document.querySelector('#game_cells_container');
 const gameProgressNode = document.querySelector('#game_progress');
 const gameProgressStateNode = gameProgressNode.querySelector('.state');
+let gameModeSelected = 'basic';
+let gameMode, cellRows, cellColumns, numberMinesRendered, numberMinesToDiscover, numberMinesDiscovered, ratioMinesCells;
 gameProgressStateNode.innerHTML = thinkingCharacter;
 
 function getCellNode(row, column) {
@@ -20,6 +37,15 @@ function getCellNode(row, column) {
 
 function cellNodeIsBomb(cellNode) {
     return cellNode.getAttribute('data-is-bomb') === 'true';
+};
+
+function setGameMode(newGameModeSelected) {
+    gameModeSelected = newGameModeSelected;
+    gameMode = gameModes[gameModeSelected];
+    cellRows = gameMode.cellRows;
+    cellColumns = gameMode.cellColumns;
+    numberMinesToDiscover = gameMode.numberMinesToDiscover;
+    ratioMinesCells = Math.round(cellRows * cellColumns / numberMinesToDiscover);
 };
 
 function startGame() {
@@ -89,6 +115,8 @@ function elementContainsEveryClass(element, arrayClasses) {
     return arrayClasses.every(className => element.classList.contains(className));
 };
 
+resetGame();
+setGameMode(gameModeSelected);
 startGame();
 
 function iterateNeighborCells(row, column, extra_params_array, iterationFunction) {
